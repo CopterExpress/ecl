@@ -406,6 +406,7 @@ union filter_control_status_u {
 		uint32_t ev_yaw      : 1; // 13 - true when yaw data from external vision measurements is being fused
 		uint32_t ev_hgt      : 1; // 14 - true when height data from external vision measurements is being fused
 		uint32_t fuse_beta   : 1; // 15 - true when synthetic sideslip measurements are being fused
+		uint32_t fake_origin : 1; // 16 - true when fake global position is being enabled
 		uint32_t update_mag_states_only   : 1; // 16 - true when only the magnetometer states are updated by the magnetometer
 	} flags;
 	uint32_t value;

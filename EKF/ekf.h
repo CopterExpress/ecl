@@ -204,6 +204,17 @@ public:
 	// return a bitmask integer that describes which state estimates can be used for flight control
 	void get_ekf_soln_status(uint16_t *status);
 
+	// set flag if publishing of a fake global position should be used
+	void set_fake_origin_flag(bool fake_origin) {_control_status.flags.fake_origin = fake_origin;}
+
+	// set origin of a fake global position
+	void set_fake_origin_pos(double fake_lat, double fake_lon) { 
+		if (!_NED_origin_initialised && _control_status.flags.fake_origin) {
+			map_projection_init(&_pos_ref, fake_lat, fake_lon);
+			_NED_origin_initialised = true;
+		}
+	}
+
 private:
 
 	static constexpr uint8_t _k_num_states{24};
@@ -554,5 +565,4 @@ private:
 
 	// check that the range finder data is continuous
 	void checkRangeDataContinuity();
-
 };
