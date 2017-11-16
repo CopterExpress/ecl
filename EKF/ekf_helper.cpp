@@ -1107,6 +1107,11 @@ bool Ekf::global_position_is_valid()
 {
 	// return true if the position estimate is valid
 	// TODO implement proper check based on published GPS accuracy, innovation consistency checks and timeout status
+	if(_control_status.flags.fake_origin && !_control_status.flags.gps) {
+		//printf("_NED_origin_initialised = %d\n", _NED_origin_initialised);
+		return _NED_origin_initialised;
+	}
+	else
 	return (_NED_origin_initialised && ((_time_last_imu - _time_last_gps) < 5e6) && _control_status.flags.gps);
 }
 
