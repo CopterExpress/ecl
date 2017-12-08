@@ -870,9 +870,15 @@ void Ekf::get_covariances(float *covariances)
 // return true if the origin is valid
 bool Ekf::get_ekf_origin(uint64_t *origin_time, map_projection_reference_s *origin_pos, float *origin_alt)
 {
-	memcpy(origin_time, &_last_gps_origin_time_us, sizeof(uint64_t));
-	memcpy(origin_pos, &_pos_ref, sizeof(map_projection_reference_s));
-	memcpy(origin_alt, &_gps_alt_ref, sizeof(float));
+	if(_control_status.flags.fake_origin && !_control_status.flags.gps) {
+		memcpy(origin_time, &_last_vpe_origin_time_us, sizeof(uint64_t));
+		memcpy(origin_pos, &_pos_ref, sizeof(map_projection_reference_s));
+		memcpy(origin_alt, &_vpe_alt_ref, sizeof(float));
+	} else {
+		memcpy(origin_time, &_last_gps_origin_time_us, sizeof(uint64_t));
+		memcpy(origin_pos, &_pos_ref, sizeof(map_projection_reference_s));
+		memcpy(origin_alt, &_gps_alt_ref, sizeof(float));
+	}
 	return _NED_origin_initialised;
 }
 

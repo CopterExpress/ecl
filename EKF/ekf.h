@@ -220,6 +220,8 @@ public:
 		if (!_NED_origin_initialised && _control_status.flags.fake_origin) {
 			map_projection_init(&_pos_ref, fake_lat, fake_lon);
 			_NED_origin_initialised = true;
+			_last_vpe_origin_time_us = _time_last_imu;
+			_vpe_alt_ref = 0.0;
 			PX4_WARN("FAKE_ORIGIN initialized");
 		}
 	}
@@ -349,6 +351,9 @@ private:
 	// Variables used to publish the WGS-84 location of the EKF local NED origin
 	uint64_t _last_gps_origin_time_us{0};	///< time the origin was last set (uSec)
 	float _gps_alt_ref{0.0f};		///< WGS-84 height (m)
+
+	uint64_t _last_vpe_origin_time_us{0};	///< time the origin was last set (uSec)
+	float _vpe_alt_ref{0.0f};		///< WGS-84 height (m)
 
 	// Variables used to initialise the filter states
 	uint32_t _hgt_counter{0};		///< number of height samples read during initialisation
